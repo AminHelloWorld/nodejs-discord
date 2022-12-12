@@ -1,3 +1,5 @@
+const { authJwt } = require("../middleware");
+
 module.exports = app => {
     const channels = require("../controllers/channel.controller.js");
   
@@ -5,7 +7,10 @@ module.exports = app => {
   
     // list all channels
     router.get("/list", channels.list);
-  
-    app.use('/api/discord/channel', router);
+    
+    app.use(
+        '/api/discord/channel',
+        [authJwt.verifyToken, authJwt.isAdmin], 
+        router);
   };
   

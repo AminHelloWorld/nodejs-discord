@@ -40,6 +40,7 @@ require("./app/routes/user.routes")(app);
 require("./app/routes/message.routes")(app);
 require("./app/routes/channel.routes")(app);
 
+require('./app/routes/auth.routes')(app);
 // set port, listen for requests
 const PORT = process.env.PORT || 8080;
 app.listen(PORT, () => {

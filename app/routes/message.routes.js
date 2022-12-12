@@ -4,7 +4,10 @@ module.exports = app => {
     var router = require("express").Router();
   
     // list messages on a channel
-    router.get("/list", messages.list);
+    router.get(
+      "/list",
+      [authJwt.verifyToken], 
+      messages.list);
   
     app.use('/api/discord/message', router);
   };
