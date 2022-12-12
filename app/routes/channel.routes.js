@@ -7,10 +7,13 @@ module.exports = app => {
   
     // list all channels
     router.get("/list", channels.list);
+
     
-    app.use(
-        '/api/discord/channel',
-        [authJwt.verifyToken, authJwt.isAdmin], 
-        router);
+    router.post(
+      "/",
+      [authJwt.verifyToken, authJwt.isAdmin], 
+      channels.create);
+    
+    app.use('/api/discord/channel', router);
   };
   
