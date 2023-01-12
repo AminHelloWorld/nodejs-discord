@@ -19,7 +19,6 @@ const db = {};
 db.Sequelize = Sequelize;
 db.sequelize = sequelize;
 
-db.tutorials = require("./tutorial.model.js")(sequelize, Sequelize);
 db.users = require("./user.model")(sequelize, Sequelize);
 db.channels = require("./channel.model")(sequelize, Sequelize);
 db.messages = require("./message.model")(sequelize, Sequelize);
