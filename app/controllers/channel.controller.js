@@ -32,13 +32,13 @@ exports.create = (req, res) => {
         }
       }).then(roles => {
         channel.setRoles(roles).then(() => {
-          res.send({ message: "channel created successfully!" });
+          res.send({ message: "channel created successfully! (specific roles)" });
         });
       });
     } else {
       // user role = 1
       channel.setRoles([1]).then(() => {
-        res.send({ message: "User registered successfully!" });
+        res.send({ message: "channel created successfully! (user role)" });
       });
     }
   })
