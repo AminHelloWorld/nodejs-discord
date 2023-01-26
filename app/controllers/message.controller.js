@@ -3,8 +3,6 @@ const Message = db.messages;
 const Op = db.Sequelize.Op;
 
 exports.list = (req, res) => {
-  console.log(req.query.channelId);
-  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 
   Message.findAll({
     where: {

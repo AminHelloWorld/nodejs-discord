@@ -100,8 +100,6 @@ verifyUser = (req, res, next) => {
 
 
 verifyChannelRole = (req, res, next) => {
-  console.log(req.query.channelId);
-  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
   Channel.findOne({
     where: {
       id : req.query.channelId
