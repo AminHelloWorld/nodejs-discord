@@ -5,14 +5,38 @@ module.exports = app => {
   
     var router = require("express").Router();
   
-    // list all channels
-    router.get("/list", channels.list);
-
-    
+    // CREATE CHANNEL
     router.post(
-      "/",
+      "/channel",
       [authJwt.verifyToken, authJwt.isAdmin], 
-      channels.create);
+      channels.create
+    );
+    
+    // READ ALL CHANNELS (LIST)
+    router.get(
+      "/channel/list",
+      [authJwt.verifyToken],
+      channels.readAll
+    );
+    
+    // TODO 
+    //UPDATE CHANNEL
+
+    router.put(
+      "/channel",
+      [authJwt.verifyToken, authJwt.isAdmin],
+      channels.update
+    );
+    
+
+    // TODO 
+    //DELETE CHANNEL
+    router.delete(
+      "/channel",
+      [authJwt.verifyToken, authJwt.isAdmin], 
+      channels.delete
+    );
+   
     
     app.use('/api/discord/channel', router);
   };

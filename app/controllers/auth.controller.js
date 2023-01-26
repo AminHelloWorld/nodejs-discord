@@ -40,7 +40,7 @@ exports.signup = (req, res) => {
     });
 };
 
-exports.signin = (req, res) => {
+exports.login = (req, res) => {
   User.findOne({
     where: {
       username: req.body.username
@@ -84,4 +84,13 @@ exports.signin = (req, res) => {
     .catch(err => {
       res.status(500).send({ message: err.message });
     });
+};
+
+exports.logout = (req, res) => {
+  exports.update = (req,res) => {
+    res.status(500).send({
+      message:
+        err.message || "Enpoint not implemented"
+    });
+  }
 };
