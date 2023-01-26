@@ -20,7 +20,6 @@ verifyToken = (req, res, next) => {
       });
     }
     req.username = decoded.username;
-    console.log(req.username);
     next();
   });
 };
@@ -101,9 +100,11 @@ verifyUser = (req, res, next) => {
 
 
 verifyChannelRole = (req, res, next) => {
+  console.log(req.query.channelId);
+  console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
   Channel.findOne({
     where: {
-      id : req.body.channelId
+      id : req.query.channelId
     }
   }).
   then(channel =>{

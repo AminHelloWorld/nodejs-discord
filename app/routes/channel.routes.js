@@ -7,14 +7,14 @@ module.exports = app => {
   
     // CREATE CHANNEL
     router.post(
-      "/channel",
+      "/",
       [authJwt.verifyToken, authJwt.isAdmin], 
       channels.create
     );
     
     // READ ALL CHANNELS (LIST)
     router.get(
-      "/channel/list",
+      "/list",
       [authJwt.verifyToken],
       channels.readAll
     );
@@ -23,7 +23,7 @@ module.exports = app => {
     //UPDATE CHANNEL
 
     router.put(
-      "/channel",
+      "/",
       [authJwt.verifyToken, authJwt.isAdmin],
       channels.update
     );
@@ -32,7 +32,7 @@ module.exports = app => {
     // TODO 
     //DELETE CHANNEL
     router.delete(
-      "/channel",
+      "/",
       [authJwt.verifyToken, authJwt.isAdmin], 
       channels.delete
     );
