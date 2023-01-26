@@ -35,7 +35,6 @@ app.get("/", (req, res) => {
   res.json({ message: "Welcome to bezkoder application." });
 });
 
-require("./app/routes/turorial.routes")(app);
 require("./app/routes/user.routes")(app);
 require("./app/routes/message.routes")(app);
 require("./app/routes/channel.routes")(app);

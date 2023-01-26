@@ -3,18 +3,6 @@ const Channel = db.channels;
 const Op = db.Sequelize.Op;
 const Role = db.roles;
 
-exports.list = (req, res) => {
-  Channel.findAll().then(data => {
-    res.send(data);
-  })
-  .catch(err => {
-    res.status(500).send({
-      message:
-        err.message || "Some error occurred while retrieving channel."
-    });
-  });;
-}
-
 
 exports.create = (req, res) => {
   console.log(req.body.roles);
@@ -46,3 +34,42 @@ exports.create = (req, res) => {
     res.status(500).send({ message: err.message });
   });
 }
+
+
+exports.readAll = (req, res) => {
+  Channel.findAll().then(data => {
+    res.send(data);
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while retrieving channel."
+    });
+  });;
+}
+
+
+exports.update = (req,res) => {
+  Channel.findOne({
+    where: {
+      channelId: req.body .channelId
+    }
+  })
+    .then(channel =>
+      channel.set({
+        name: (req.body.name !== null) ? req.body.name : channel.name
+      })
+    );
+
+}
+
+exports.delete = () => {
+  
+exports.update = (req,res) => {
+  res.status(500).send({
+    message:
+      err.message || "Enpoint not implemented"
+  });
+}
+}
+
