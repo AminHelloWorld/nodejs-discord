@@ -21,13 +21,10 @@ exports.list = (req, res) => {
 
 //todo test
 exports.send = (req, res) => {
-  console.log(req.body.text);
-  console.log(req.username);
-  console.log(req.body.channelId);
   Message.create({
     text: req.body.text,
     userId: 6,
-    channelId : req.body.channelId
+    channelId : req.query.channelId
   }).then(() => {
     res.send({ message: "Message sent successfully!" });
   })

@@ -20,7 +20,6 @@ verifyToken = (req, res, next) => {
       });
     }
     req.username = decoded.username;
-    console.log(req.username);
     next();
   });
 };
@@ -103,7 +102,7 @@ verifyUser = (req, res, next) => {
 verifyChannelRole = (req, res, next) => {
   Channel.findOne({
     where: {
-      id : req.body.channelId
+      id : req.query.channelId
     }
   }).
   then(channel =>{

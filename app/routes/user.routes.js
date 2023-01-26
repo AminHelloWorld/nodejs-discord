@@ -13,7 +13,7 @@ module.exports = app => {
   
   // list messages on a channel
   router.get(
-    "/user/list", 
+    "/list", 
     [authJwt.verifyToken, authJwt.isAdmin],
     users.list
   );
@@ -23,7 +23,7 @@ module.exports = app => {
     // UPDATE USER
     
   router.put(
-    "/user",
+    "/",
     [authJwt.verifyToken], //Verify user? ?
     users.update
   );
@@ -32,7 +32,7 @@ module.exports = app => {
   // TODO 
   // DELETE USER
   router.delete(
-    "/user",
+    "/",
     [authJwt.verifyToken], //verifyUserOrAdmin ????
     users.delete
   );  

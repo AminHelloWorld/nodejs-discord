@@ -5,7 +5,6 @@ const Role = db.roles;
 
 
 exports.create = (req, res) => {
-  console.log(req.body.roles);
   Channel.create({
     name: req.body.name,
     type: req.body.type
