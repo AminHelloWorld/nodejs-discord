@@ -2,6 +2,8 @@ const db = require("../models");
 const Message = db.messages;
 const Op = db.Sequelize.Op;
 
+
+//TODO PAGINATION
 exports.list = (req, res) => {
 
   Message.findAll({
@@ -20,9 +22,11 @@ exports.list = (req, res) => {
 }
 
 //todo test
+
 exports.send = (req, res) => {
   Message.create({
     text: req.body.text,
+    originalText: req.body.text,
     userId: 6,
     channelId : req.query.channelId
   }).then(() => {
@@ -38,10 +42,18 @@ exports.send = (req, res) => {
 
 //todo
 exports.update = (req,res) => {
-  res.status(500).send({
-    message:
-      err.message || "Enpoint not implemented"
-  });
+  Message.update(
+    { text: req.body.text },
+  { where: { id: req.query.messageId } }
+  ).then(() => {
+    res.send({ message: "Message updated successfully!" });
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while updating message."
+    });
+  });;
 }
 
 //todo

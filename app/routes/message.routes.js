@@ -22,7 +22,7 @@ module.exports = app => {
     messages.list
   );
 
-  // TODO
+  // TODO AUTH
   // UPDATE MESSAGE
 
   router.put(
@@ -32,7 +32,7 @@ module.exports = app => {
   );
 
 
-  // TODO 
+  // TODO AUTH
   // DELETE MESSAGE
   router.delete(
     "/",

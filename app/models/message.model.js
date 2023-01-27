@@ -5,6 +5,9 @@ module.exports = (sequelize, Sequelize) => {
       text: {
         type: Sequelize.STRING
       },
+      originalText: {
+        type: Sequelize.STRING
+      },
       userId: {
         type: Sequelize.INTEGER,
         references: {
