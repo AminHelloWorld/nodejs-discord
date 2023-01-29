@@ -5,6 +5,9 @@ module.exports = (sequelize, Sequelize) => {
       text: {
         type: Sequelize.STRING
       },
+      originalText: {
+        type: Sequelize.STRING
+      },
       userId: {
         type: Sequelize.INTEGER,
         references: {
@@ -18,10 +21,6 @@ module.exports = (sequelize, Sequelize) => {
             model: 'channels', //table name
             key: 'id' //table column
         }
-      },
-      date: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       }
     });
   
