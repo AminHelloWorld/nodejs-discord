@@ -21,10 +21,6 @@ module.exports = (sequelize, Sequelize) => {
             model: 'channels', //table name
             key: 'id' //table column
         }
-      },
-      date: {
-        type: Sequelize.DATE,
-        defaultValue: Sequelize.NOW
       }
     });
   
