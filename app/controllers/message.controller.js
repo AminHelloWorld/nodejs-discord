@@ -2,12 +2,7 @@ const db = require("../models");
 const Message = db.messages;
 const Op = db.Sequelize.Op;
 
-async function getMsgCount(channelId){
-  return await Message.count({
-    where: {
-      channelId: req.query.channelId 
-    }});
-}
+
 
 exports.list = (req, res) => {
 
