@@ -1,6 +1,6 @@
 const db = require("../models");
 const Message = db.messages;
-const Op = db.Sequelize.Op;
+const sequelize = db.sequelize;
 
 
 
@@ -63,7 +63,7 @@ exports.send = (req, res) => {
 exports.update = (req,res) => {
   Message.update(
     { text: req.body.text,
-      updatedAt: Sequelize.NOW},
+      updatedAt: sequelize.fn('NOW')},
   { where: { id: req.query.messageId } }
   ).then(() => {
     res.send({ message: "Message updated successfully!" });

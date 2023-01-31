@@ -12,9 +12,7 @@ module.exports = app => {
     messages.send
   );
 
-  // TODO
-  // READ MESSAGES (list) ?
-  
+  // READ MESSAGES (list) 
   // list messages on a channel
   router.get(
     "/list", 
@@ -22,12 +20,12 @@ module.exports = app => {
     messages.list
   );
 
-  // TODO AUTH
+  // TODO AUTH MAYBE CHECK IF USER STILL HAS ACCES TO THE CHANNEL THE MESSAGE WAS SENT TO
   // UPDATE MESSAGE
 
   router.put(
     "/",
-    [authJwt.verifyToken], //, authJwt.verifyUser
+    [authJwt.verifyToken, authJwt.verifyMessageUser],
     messages.update
   );
 
