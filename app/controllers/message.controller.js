@@ -10,7 +10,7 @@ exports.list = (req, res) => {
     offset: (req.query.page-1) * req.query.perPage,
     limit: parseInt(req.query.perPage),
     order: [
-      ['creationDate', 'DESC']
+      ['createdAt', 'DESC']
     ],
     where: {
       channelId: req.query.channelId 
@@ -46,7 +46,7 @@ exports.send = (req, res) => {
   Message.create({
     text: req.body.text,
     originalText: req.body.text,
-    userId: 6,
+    userId: req.userId,
     channelId : req.query.channelId
   }).then(() => {
     res.send({ message: "Message sent successfully!" });

@@ -19,7 +19,7 @@ verifyToken = (req, res, next) => {
         message: "Unauthorized!"
       });
     }
-    req.username = decoded.username;
+    req.userId = decoded.userId;
     next();
   });
 };
@@ -27,7 +27,7 @@ verifyToken = (req, res, next) => {
 isAdmin = (req, res, next) => {
   User.findOne({
     where: {
-      username: req.username
+      id: req.userId
     }
   }).then(user => {
     user.getRoles().then(roles => {
@@ -49,7 +49,7 @@ isAdmin = (req, res, next) => {
 isModerator = (req, res, next) => {
   User.findOne({
     where: {
-      username: req.username
+      id: req.userId
     }
   }).then(user => {
     user.getRoles().then(roles => {
@@ -70,7 +70,7 @@ isModerator = (req, res, next) => {
 isModeratorOrAdmin = (req, res, next) => {
   User.findOne({
     where: {
-      username: req.username
+      id: req.userId
     }
   }).then(user => {
     user.getRoles().then(roles => {
@@ -112,7 +112,7 @@ verifyChannelRole = (req, res, next) => {
       channelRoles = channelRoles.map((channelRoles) => channelRoles.id)
       User.findOne({
         where: {
-          username: req.username
+          id: req.userId
         }
       }).then(user => {
         user.getRoles({
