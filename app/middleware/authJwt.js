@@ -147,13 +147,47 @@ verifyMessageUser = (req, res, next) => {
       id: req.query.messageId
     }
   }).then(message => {
-    if (message.userId != req.userId) {
-      res.status(403).send({
-        message: "You are not allowed to perform this action because you're not the sender of this message."
-      });
+    if (message.userId == req.userId) {
+      next();
+      return;
     }
-    next();
-    return;
+    res.status(403).send({
+      message: "You are not allowed to perform this action because you're not the sender of this message."
+    });
+  })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while checking message sender identity."
+      });
+    });;
+}
+
+verifyMessageUserOrAdmin = (req, res, next) => {
+
+  Message.findOne({
+    where: {
+      id: req.query.messageId
+    }
+  }).then(message => {
+    User.findOne({
+      where: {
+        id: req.userId
+      }
+    }).then(user => {
+      user.getRoles({
+        attributes: [`id`]
+      }).then(userRoles => {
+        userRoles = userRoles.map((userRoles) => userRoles.id);
+        if (userRoles.includes(2) || message.userId == req.userId) {
+          next();
+          return;
+        }
+        res.status(403).send({
+          message: "You are not allowed to perform this action because you're not the sender of this message nor an admin."
+        });
+      })
+    })
   })
     .catch(err => {
       res.status(500).send({
@@ -164,12 +198,14 @@ verifyMessageUser = (req, res, next) => {
 }
 
 
+
 const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
   isModerator: isModerator,
   isModeratorOrAdmin: isModeratorOrAdmin,
   verifyChannelRole: verifyChannelRole,
-  verifyMessageUser: verifyMessageUser
+  verifyMessageUser: verifyMessageUser,
+  verifyMessageUserOrAdmin: verifyMessageUserOrAdmin
 };
 module.exports = authJwt;

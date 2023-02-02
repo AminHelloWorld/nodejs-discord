@@ -78,8 +78,5 @@ exports.update = (req,res) => {
 
 //todo
 exports.delete = (req,res) => {
-  res.status(500).send({
-    message:
-      err.message || "Enpoint not implemented"
-  });
+  res.send({ message: "Endpoint not implemented" });
 }
