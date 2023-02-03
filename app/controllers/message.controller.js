@@ -75,7 +75,20 @@ exports.update = (req,res) => {
   });;
 }
 
-//todo
+
 exports.delete = (req,res) => {
-  res.send({ message: "Endpoint not implemented" });
+  Message.destroy({
+    where: {
+      id: req.query.messageId
+    }
+  })
+  .then(()=>{
+    res.send({ message: "Message deleted successfully!" })
+  })
+  .catch(err => {
+    res.status(500).send({
+      message:
+        err.message || "Some error occurred while deleting message."
+    });
+  });;
 }

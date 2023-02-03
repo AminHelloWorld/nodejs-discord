@@ -19,16 +19,15 @@ module.exports = app => {
       channels.readAll
     );
     
-    // TODO 
-    //UPDATE CHANNEL
 
+    //UPDATE CHANNEL
     router.put(
       "/",
       [authJwt.verifyToken, authJwt.isAdmin],
       channels.update
     );
     
-    
+
     //DELETE CHANNEL
     router.delete(
       "/",
