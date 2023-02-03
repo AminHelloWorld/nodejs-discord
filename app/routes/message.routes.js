@@ -6,7 +6,26 @@ module.exports = app => {
     var router = require("express").Router();
   
 
-  // CREATE MESSAGE (send message)
+  /*
+   *  CREATE MESSAGE (Send Message)
+   *  Creates a message associated with an existing channel
+   *  Input : 
+   *    Query params : 
+   *      - [REQUIRED] channelId 
+   *    Body :
+   *      - [REQUIRED] text
+   *  Output :
+   *      - 200 OK -- { "message" : "Message sent successfully!" }
+   *      Errors : 
+   *            - 401 Unauthorized -- { "message" : "Unauthorized!" }
+   *            - 403 Forbidden -- { "message" : "No token provided!" }
+   * 
+   *            - 400 Bad Request -- { "message" : "Channel doesn't exist" }
+   *            - 403 Forbidden -- { "message" : "You don't have the required role to do this !" }
+   *            - 500 Internal Server Error
+   *  Auth : 
+   *    - The user's roles have to grant them access to the channel
+  */
   router.post(
     "/",
     [authJwt.verifyToken, authJwt.verifyChannelRole],
@@ -14,7 +33,7 @@ module.exports = app => {
   );
 
   /*
-   *  READ MESSAGES (list) 
+   *  READ MESSAGES (List/Pagination) 
    *  List messages on a channel in reverse chronological order
    *  Input :
    *    Query params : 
@@ -22,8 +41,16 @@ module.exports = app => {
    *      - [REQUIRED] perPage -- Number of items in a page a.k.a. the number of messages that should be returned by the query
    *      - [REQUIRED] page -- Number of the page returned a.k.a. the range of the messages returned (from page*perPage to page*perPage+1)
    *  Output :
+   *      - 200 OK 
    *      - Pagination info : page, perPage, and total number of messages
    *      - List of message objects
+   *      Errors : 
+   *            - 401 Unauthorized -- { "message" : "Unauthorized!" }
+   *            - 403 Forbidden -- { "message" : "No token provided!" }
+
+   *            - 400 Bad Request -- { "message" : "Channel doesn't exist" }
+   *            - 403 Forbidden -- { "message" : "You don't have the required role to do this !" }
+   *            - 500 Internal Server Error
    *  Auth : 
    *    - The user's roles have to grant them access to the channel
    */
@@ -43,11 +70,16 @@ module.exports = app => {
    *    Body :
    *      - [REQUIRED] text
    *  Output :
-   *    OK or not
+   *      - 200 OK -- { "message" : "Message updated successfully!" }
+   *      Errors : 
+   *            - 401 Unauthorized -- { "message" : "Unauthorized!" }
+   *            - 403 Forbidden -- { "message" : "No token provided!" }
+
+   *            - 400 Bad Request -- { "message" : "Message doesn't exist." }
+   *            - 403 Forbidden -- { "message" : "You are not allowed to perform this action because you're not the sender of this message." }
+   *            - 500 Internal Server Error
    *  Auth : 
    *    - User sending the query has to be the one who sent the message
-   * 
-   *  TODO AUTH MAYBE CHECK IF USER STILL HAS ACCES TO THE CHANNEL THE MESSAGE WAS SENT TO
    */
   router.put(
     "/",
@@ -57,7 +89,21 @@ module.exports = app => {
   
   /*  
    *  DELETE MESSAGE
-   *  TODO AUTH
+   *  Deletes a message
+   *  Input :
+   *    Query params : 
+   *      - [REQUIRED] messageId 
+   *  Output :
+   *      - 200 OK -- { "message" : "Message deleted successfully!" }
+   *      Errors : 
+   *            - 401 Unauthorized -- { "message" : "Unauthorized!" }
+   *            - 403 Forbidden -- { "message" : "No token provided!" }
+
+   *            - 400 Bad Request -- { "message" : "Message doesn't exist." }
+   *            - 403 Forbidden -- { "message" : "You are not allowed to perform this action because you're not the sender of this message nor an admin." }
+   *            - 500 Internal Server Error
+   *  Auth : 
+   *    - User sending the query has to be the one who sent the message
    */
   router.delete(
     "/",

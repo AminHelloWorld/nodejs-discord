@@ -102,6 +102,11 @@ verifyChannelRole = (req, res, next) => {
     }
   }).
     then(channel => {
+      if (channel == null) {
+        return res.status(400).send({
+          message: "Channel doesn't exist"
+        });
+      }
       channel.getRoles({
         attributes: [`id`]
       }).then(channelRoles => {
@@ -116,13 +121,12 @@ verifyChannelRole = (req, res, next) => {
           }).then(userRoles => {
             userRoles = userRoles.map((userRoles) => userRoles.id)
             let intersection = channelRoles.filter(id => userRoles.includes(id));
-            if (intersection.length > 0) {
-              next();
-              return;
+            if (intersection.length == 0) {
+              return res.status(403).send({
+                message: "You don't have the required role to do this !"
+              });
             }
-            res.status(403).send({
-              message: "You don't have the required role to do this !"
-            });
+            next();
           });
         });
       })
@@ -131,7 +135,7 @@ verifyChannelRole = (req, res, next) => {
     .catch(err => {
       res.status(500).send({
         message:
-          err.message || "Some error occurred while    the channel."
+          err.message || "Some error occurred."
       });
     });;
 }
@@ -147,13 +151,17 @@ verifyMessageUser = (req, res, next) => {
       id: req.query.messageId
     }
   }).then(message => {
-    if (message.userId == req.userId) {
-      next();
-      return;
+    if(message==null){
+      return res.status(400).send({
+        message: "Message doesn't exist."
+      });
     }
-    res.status(403).send({
-      message: "You are not allowed to perform this action because you're not the sender of this message."
-    });
+    if (message.userId != req.userId) {
+      return res.status(403).send({
+        message: "You are not allowed to perform this action because you're not the sender of this message."
+      });
+    }
+    next();
   })
     .catch(err => {
       res.status(500).send({
@@ -170,6 +178,11 @@ verifyMessageUserOrAdmin = (req, res, next) => {
       id: req.query.messageId
     }
   }).then(message => {
+    if(message==null){
+      return res.status(400).send({
+        message: "Message doesn't exist."
+      });
+    }
     User.findOne({
       where: {
         id: req.userId
@@ -179,13 +192,12 @@ verifyMessageUserOrAdmin = (req, res, next) => {
         attributes: [`id`]
       }).then(userRoles => {
         userRoles = userRoles.map((userRoles) => userRoles.id);
-        if (userRoles.includes(2) || message.userId == req.userId) {
-          next();
-          return;
+        if (!userRoles.includes(2) && message.userId != req.userId) {
+          return res.status(403).send({
+            message: "You are not allowed to perform this action because you're not the sender of this message nor an admin."
+          });
         }
-        res.status(403).send({
-          message: "You are not allowed to perform this action because you're not the sender of this message nor an admin."
-        });
+        next();
       })
     })
   })
