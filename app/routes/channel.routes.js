@@ -28,8 +28,7 @@ module.exports = app => {
       channels.update
     );
     
-
-    // TODO 
+    
     //DELETE CHANNEL
     router.delete(
       "/",
