@@ -1,10 +1,10 @@
 const authJwt = require("../middleware/authJwt.js");
 
 module.exports = app => {
-    const messages = require("../controllers/message.controller.js");
-  
-    var router = require("express").Router();
-  
+  const messages = require("../controllers/message.controller.js");
+
+  var router = require("express").Router();
+
 
   /*
    *  CREATE MESSAGE (Send Message)
@@ -55,7 +55,7 @@ module.exports = app => {
    *    - The user's roles have to grant them access to the channel
    */
   router.get(
-    "/list", 
+    "/list",
     [authJwt.verifyToken, authJwt.verifyChannelRole],
     messages.list
   );
@@ -86,7 +86,7 @@ module.exports = app => {
     [authJwt.verifyToken, authJwt.verifyMessageUser],
     messages.update
   );
-  
+
   /*  
    *  DELETE MESSAGE
    *  Deletes a message
@@ -107,12 +107,11 @@ module.exports = app => {
    */
   router.delete(
     "/",
-    [authJwt.verifyToken, authJwt.verifyMessageUserOrAdmin], 
+    [authJwt.verifyToken, authJwt.verifyMessageUserOrAdmin],
     messages.delete
   );
 
-  
 
-    app.use('/api/discord/message', router);
-  };
-  
+
+  app.use('/api/discord/message', router);
+};
