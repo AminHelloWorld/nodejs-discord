@@ -40,7 +40,6 @@ exports.list = (req, res) => {
   });;
 }
 
-//todo test
 
 exports.send = (req, res) => {
   Message.create({
@@ -59,7 +58,7 @@ exports.send = (req, res) => {
   });;
 }
 
-//todo
+
 exports.update = (req,res) => {
   Message.update(
     { text: req.body.text,
