@@ -1,6 +1,6 @@
 const db = require("../models");
 const Message = db.messages;
-const Op = db.Sequelize.Op;
+const sequelize = db.sequelize;
 
 
 
@@ -10,7 +10,7 @@ exports.list = (req, res) => {
     offset: (req.query.page-1) * req.query.perPage,
     limit: parseInt(req.query.perPage),
     order: [
-      ['creationDate', 'DESC']
+      ['createdAt', 'DESC']
     ],
     where: {
       channelId: req.query.channelId 
@@ -46,7 +46,7 @@ exports.send = (req, res) => {
   Message.create({
     text: req.body.text,
     originalText: req.body.text,
-    userId: 6,
+    userId: req.userId,
     channelId : req.query.channelId
   }).then(() => {
     res.send({ message: "Message sent successfully!" });
@@ -63,7 +63,7 @@ exports.send = (req, res) => {
 exports.update = (req,res) => {
   Message.update(
     { text: req.body.text,
-      updatedAt: Sequelize.NOW},
+      updatedAt: sequelize.fn('NOW')},
   { where: { id: req.query.messageId } }
   ).then(() => {
     res.send({ message: "Message updated successfully!" });
@@ -78,8 +78,5 @@ exports.update = (req,res) => {
 
 //todo
 exports.delete = (req,res) => {
-  res.status(500).send({
-    message:
-      err.message || "Enpoint not implemented"
-  });
+  res.send({ message: "Endpoint not implemented" });
 }
