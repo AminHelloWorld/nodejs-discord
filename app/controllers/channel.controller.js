@@ -13,22 +13,26 @@ exports.create = (req, res) => {
     type: req.body.type
   })
     .then(channel => {
-      if (req.body.roles) {
+      if (!req.body.roles || req.body.roles.length==0) {
+        return res.status(400).send({
+          message: "Roles must be assigned to the channel for it to be created."
+        })
+      } else {
         Role.findAll({
           where: {
-            name: {
-              [Op.or]: req.body.roles
+            id: {
+              [Op.in]: req.body.roles
             }
           }
         }).then(roles => {
+          if(roles.length!=req.body.roles.length){
+            return res.status(400).send({
+              message: "At least one of the roles that were assigned to the channel were not found."
+            });
+          }
           channel.setRoles(roles).then(() => {
-            res.send({ message: "channel created successfully! (specific roles)" });
+            res.send({ message: "Channel created successfully." });
           });
-        });
-      } else {
-        // user role = 1
-        channel.setRoles([1]).then(() => {
-          res.send({ message: "channel created successfully! (user role)" });
         });
       }
     })
@@ -38,7 +42,7 @@ exports.create = (req, res) => {
 }
 
 
-exports.readAll = (req, res) => {
+exports.list = (req, res) => {
 
   User.findOne({
     where: {
@@ -111,8 +115,13 @@ exports.update = (req, res) => {
     },
     { where: { id: req.query.channelId } }
   )
-    .then(() => {
-      res.send("Channel updated successfully")
+    .then(result => {
+      if(result[0]==0){
+        return res.status(400).send({
+          message: "Channel not found."
+        })
+      }
+      res.send({message : "Channel updated successfully"})
     })
     .catch(err => {
       res.status(500).send({
@@ -129,14 +138,19 @@ exports.delete = (req, res) => {
       channelId: req.query.channelId
     }
   })
-    .then(() =>{
+    .then(messages =>{
       Channel.destroy({
         where: {
           id: req.query.channelId
         }
       })
-        .then(() => {
-          res.send("Channel deleted successfully")
+      .then(result => {
+        if(result==0){
+          return res.status(400).send({
+            message: "Channel not found."
+          })
+        }
+          res.send({message : "Channel deleted successfully"})
         })
    })
     .catch(err => {
