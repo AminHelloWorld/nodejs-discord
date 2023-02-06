@@ -20,8 +20,20 @@ verifyToken = (req, res, next) => {
         message: "Unauthorized!"
       });
     }
-    req.userId = decoded.userId;
-    next();
+    User.findOne({
+      where: {
+        id: decoded.userId
+      }
+    }).
+      then(user =>{
+        if (user == null) {
+          return res.status(400).send({
+            message: "User doesn't exist"
+          });
+        }
+        req.userId = decoded.userId;
+        next();
+      })
   });
 };
 
