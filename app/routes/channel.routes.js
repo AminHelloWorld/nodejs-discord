@@ -75,6 +75,7 @@ module.exports = app => {
    *          
    *            - 403 Forbidden -- { "message" : "Require Admin Role!" }
    *            - 400 Bad Request -- { "message" : "Channel not found." }
+   *            - 400 Bad Request -- { "message" : "Please enter a valid update value." }
    *            - 500 Internal Server Error
    *  Auth : 
    *    - The user has to be an admin

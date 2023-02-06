@@ -108,9 +108,14 @@ exports.list = (req, res) => {
 
 
 exports.update = (req, res) => {
+  if (req.body.name == null || req.body.name.trim().length == 0) {
+    return res.status(400).send({
+      message: "Please enter a valid update value."
+    })
+  }
   Channel.update(
     {
-      name: (req.body.name !== null) ? req.body.name : channel.name,
+      name: req.body.name,
       updatedAt: sequelize.fn('NOW')
     },
     { where: { id: req.query.channelId } }

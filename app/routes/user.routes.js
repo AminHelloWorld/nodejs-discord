@@ -7,20 +7,17 @@ module.exports = app => {
     
     
 
-    
-  // TODO
-  // READ USERS (list) ?
+  // READ USERS (list) 
   
-  // list messages on a channel
+  // list users on a channel
   router.get(
     "/list", 
-    [authJwt.verifyToken, authJwt.isAdmin],
+    [authJwt.verifyToken, authJwt.verifyChannelRole],
     users.list
   );
 
 
-    // TODO
-    // UPDATE USER
+  // UPDATE USER
     
   router.put(
     "/",
@@ -28,12 +25,19 @@ module.exports = app => {
     users.update
   );
 
-    
-  // TODO 
-  // DELETE USER
+     
+  // DELETE USER (self)
   router.delete(
     "/",
-    [authJwt.verifyToken], //verifyUserOrAdmin ????
+    [authJwt.verifyToken],
+    users.deleteSelf
+  );  
+  
+  
+  // DELETE USER (admin)
+  router.delete(
+    "/admin",
+    [authJwt.verifyToken,authJwt.isAdmin],
     users.delete
   );  
 
