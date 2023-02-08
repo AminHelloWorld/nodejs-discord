@@ -60,7 +60,7 @@ exports.send = (req, res) => {
 
 
 exports.update = (req,res) => {
-  if (req.body.text == null || req.body.text.trim.length == 0) {
+  if (req.body.text == null || req.body.text.trim().length == 0) {
     return res.status(400).send({
       message: "Please enter a valid update value."
     })

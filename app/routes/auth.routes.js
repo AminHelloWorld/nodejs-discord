@@ -12,7 +12,11 @@ module.exports = function(app) {
     next();
   });
 
-  // SIGNUP
+  /*
+   *  SIGNUP
+   *
+   * 
+   */
   app.post(
     "/api/auth/signup",
     [
@@ -23,13 +27,20 @@ module.exports = function(app) {
   );
 
 
-  // LOGIN
+  /*
+   *  LOGIN
+   *
+   * 
+   */
   app.post("/api/auth/login", controller.login);
 
 
 
-  //TODO
-  // LOGOUT
+  /*
+   *  LOGOUT ?
+   *  TODO
+   * 
+   */
   app.get(
     "/api/auth/logout",
     [authJwt.verifyToken], 
