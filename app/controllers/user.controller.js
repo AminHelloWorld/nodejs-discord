@@ -92,7 +92,6 @@ exports.update = (req, res) => {
     },
     { where: { id: req.userId } })
     .then(result => {
-      console.log(result);
       if (result[0] == 0) {
         return res.status(400).send({
           message: "User not found."
