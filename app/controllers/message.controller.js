@@ -2,6 +2,7 @@ const db = require("../models");
 const Message = db.messages;
 const sequelize = db.sequelize;
 
+const User = db.users;
 
 
 exports.list = (req, res) => {
@@ -42,20 +43,28 @@ exports.list = (req, res) => {
 
 
 exports.send = (req, res) => {
-  Message.create({
-    text: req.body.text,
-    originalText: req.body.text,
-    userId: req.userId,
-    channelId : req.query.channelId
-  }).then(() => {
-    res.send({ message: "Message sent successfully!" });
-  })
-  .catch(err => {
-    res.status(500).send({
-      message:
-        err.message || "Some error occurred while retrieving message."
-    });
-  });;
+  
+  User.findOne({
+    where: {
+      id: req.userId
+    }
+  }).then(user => {
+
+    Message.create({
+      text: req.body.text,
+      originalText: req.body.text,
+      userId: req.userId,
+      username: user.username,
+      channelId : req.query.channelId
+    }).then(() => {
+      res.send({ message: "Message sent successfully!" });
+    })})
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while retrieving message."
+      });
+    });;
 }
 
 
