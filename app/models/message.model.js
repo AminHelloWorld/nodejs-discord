@@ -15,6 +15,9 @@ module.exports = (sequelize, Sequelize) => {
             key: 'id' //table column
         }
       },
+      username: {
+        type: Sequelize.STRING
+      },
       channelId: {
         type: Sequelize.INTEGER,
         references: {
