@@ -6,7 +6,7 @@ https://www.postman.com/aminaminaminamin/workspace/devweb-discord-like-chat/coll
 
 
 ## Config
-
+Faire une copie de ecosystem.config.js.example nommée ecosystem.config.js
 Dans le fichier ecosystem.config.js : 
  - Remplacer les valeurs de la configuration des bases de données avec celles correspondantes a la base de données à utiliser
 
