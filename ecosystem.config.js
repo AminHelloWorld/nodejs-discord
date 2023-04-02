@@ -1,0 +1,29 @@
+module.exports = {
+  apps: [{
+    script: "./server.js",
+    env_development: {
+      name: "dev-discord-backend",
+      // Server config
+      NODE_ENV: "development",
+      NODE_PORT: 8081,
+      // DB config
+      DB_HOST: "XXX",
+      DB_PORT: "XXX",
+      DB_USER: "XXX",
+      DB_PASSWORD: "XXX",
+      DB_NAME: "XXX"
+    },
+    env_production: {
+      name: "prod-discord-backend",
+      // Server config
+      NODE_ENV: "production",
+      NODE_PORT: 8080,
+      // DB config
+      DB_HOST: "XXX",
+      DB_PORT: "XXX",
+      DB_USER: "XXX",
+      DB_PASSWORD: "XXX",
+      DB_NAME: "XXX"
+    }
+  }]
+}
