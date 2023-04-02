@@ -3,31 +3,27 @@ module.exports = {
     script: "./server.js",
     env_development: {
       name: "dev-discord-backend",
-      
       // Server config
       NODE_ENV: "development",
       NODE_PORT: 8081,
-
       // DB config
-      DB_HOST: "139.59.208.123",
-      DB_PORT: "5432",
-      DB_USER: "postgres",
-      DB_PASSWORD: "cX88F6k*JH0y",
-      DB_NAME: "devweb_dev"
+      DB_HOST: "XXX",
+      DB_PORT: "XXX",
+      DB_USER: "XXX",
+      DB_PASSWORD: "XXX",
+      DB_NAME: "XXX"
     },
     env_production: {
       name: "prod-discord-backend",
-
       // Server config
       NODE_ENV: "production",
       NODE_PORT: 8080,
-
       // DB config
-      DB_HOST: "139.59.208.123",
-      DB_PORT: "5432",
-      DB_USER: "postgres",
-      DB_PASSWORD: "cX88F6k*JH0y",
-      DB_NAME: "devweb_prod"
+      DB_HOST: "XXX",
+      DB_PORT: "XXX",
+      DB_USER: "XXX",
+      DB_PASSWORD: "XXX",
+      DB_NAME: "XXX"
     }
   }]
 }
