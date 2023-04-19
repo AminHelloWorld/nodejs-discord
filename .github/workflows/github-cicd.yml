@@ -24,8 +24,6 @@ jobs:
     - name: connect and pull 
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ github.ref_name }} && git pull && exit"
     - name: connect and stop start
-      run: |
-        npm install pm2@latest -g #Install pm2
-        ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "pm2 del ${{env.RUNNING_PROCESS}} && npm run ${{env.NPM_SCRIPT}} && exit"
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "npm install pm2@latest -g && pm2 del ${{env.RUNNING_PROCESS}} && npm run ${{env.NPM_SCRIPT}} && exit"
     - name: cleanup
       run: rm -rf ~/.ssh
