@@ -5,9 +5,13 @@ on:
       - dev
   workflow_dispatch:
   
+env:
+  RUNNING_PROCESS: ${{ fromJSON('{"master":"prod-discord-backend","dev":"dev-discord-backend"}')[github.ref_name] }}
+  NPM_SCRIPT: ${{ fromJSON('{"master":"prod","dev":"dev"}')[github.ref_name] }}
+
 jobs:
-  run_pull:
-    name: run pull
+  remote_deploy:
+    name: remote_deploy
     runs-on: ubuntu-latest
     
     steps:
@@ -17,7 +21,9 @@ jobs:
         install -m 600 -D /dev/null ~/.ssh/id_rsa
         echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SSH_HOST }} > ~/.ssh/known_hosts
-    - name: connect and pull
+    - name: connect and pull 
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ github.ref_name }} && git pull && exit"
+    - name: connect and stop start
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && export NVM_DIR=~/.nvm && source ~/.nvm/nvm.sh && ( pm2 del ${{env.RUNNING_PROCESS}} || true ) && npm install && npm run ${{env.NPM_SCRIPT}} && exit"
     - name: cleanup
       run: rm -rf ~/.ssh
