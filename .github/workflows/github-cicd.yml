@@ -24,6 +24,6 @@ jobs:
     - name: connect and pull 
       run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && git checkout ${{ github.ref_name }} && git pull && exit"
     - name: connect and stop start
-      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && export NVM_DIR=~/.nvm && source ~/.nvm/nvm.sh && pm2 del ${{env.RUNNING_PROCESS}} -s && npm install && npm  run ${{env.NPM_SCRIPT}} && exit"
+      run: ssh ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} "cd ${{ secrets.WORK_DIR }} && export NVM_DIR=~/.nvm && source ~/.nvm/nvm.sh && pm2 del ${{env.RUNNING_PROCESS}} -s && npm install && npm run ${{env.NPM_SCRIPT}} && exit"
     - name: cleanup
       run: rm -rf ~/.ssh
