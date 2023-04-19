@@ -59,54 +59,6 @@ isAdmin = (req, res, next) => {
   });
 };
 
-isModerator = (req, res, next) => {
-  User.findOne({
-    where: {
-      id: req.userId
-    }
-  }).then(user => {
-    user.getRoles().then(roles => {
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "moderator") {
-          next();
-          return;
-        }
-      }
-
-      res.status(403).send({
-        message: "Require Moderator Role!"
-      });
-    });
-  });
-};
-
-isModeratorOrAdmin = (req, res, next) => {
-  User.findOne({
-    where: {
-      id: req.userId
-    }
-  }).then(user => {
-    user.getRoles().then(roles => {
-      for (let i = 0; i < roles.length; i++) {
-        if (roles[i].name === "moderator") {
-          next();
-          return;
-        }
-
-        if (roles[i].name === "admin") {
-          next();
-          return;
-        }
-      }
-
-      res.status(403).send({
-        message: "Require Moderator or Admin Role!"
-      });
-    });
-  });
-};
-
-
 verifyChannelRole = (req, res, next) => {
   Channel.findOne({
     where: {
@@ -204,7 +156,7 @@ verifyMessageUserOrAdmin = (req, res, next) => {
         attributes: [`id`]
       }).then(userRoles => {
         userRoles = userRoles.map((userRoles) => userRoles.id);
-        if (!userRoles.includes(2) && message.userId != req.userId) {
+        if (!userRoles.includes(1) && message.userId != req.userId) {
           return res.status(403).send({
             message: "You are not allowed to perform this action because you're not the sender of this message nor an admin."
           });
@@ -226,8 +178,6 @@ verifyMessageUserOrAdmin = (req, res, next) => {
 const authJwt = {
   verifyToken: verifyToken,
   isAdmin: isAdmin,
-  isModerator: isModerator,
-  isModeratorOrAdmin: isModeratorOrAdmin,
   verifyChannelRole: verifyChannelRole,
   verifyMessageUser: verifyMessageUser,
   verifyMessageUserOrAdmin: verifyMessageUserOrAdmin

@@ -23,6 +23,7 @@ Pour utiliser ce projet il est necessaire d'avoir installé le gestionnaire de p
 ```
  npm install pm2@latest -g
 ```
+Une fois le projet lancé et la BDD synchronisée, il est necessaire de creer directement sur la BDD les roles de base id=1 "admin" et id=2 "default_user" et un utilisateur de base utilisant le role "admin".
 
 ## Lancer le projet
 ### Environnement de developpement 

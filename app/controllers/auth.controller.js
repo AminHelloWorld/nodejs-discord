@@ -16,24 +16,23 @@ exports.signup = (req, res) => {
     password: bcrypt.hashSync(req.body.password, 8)
   })
     .then(user => {
-      if (req.body.roles) {
-        Role.findAll({
-          where: {
-            name: {
-              [Op.or]: req.body.roles
+      // user role = 1
+      Role.findOne({
+        where: {
+          name: "default_user",
+          id: 2
+        }
+      })
+        .then(defaultRole => {
+          if (!defaultRole) {
+            if (!user) {
+              return res.status(404).send({ message: "Default role 'default_user' not found in DB." });
             }
+            user.setRoles([1]).then(() => {
+              res.send({ message: "User registered successfully!" });
+            });
           }
-        }).then(roles => {
-          user.setRoles(roles).then(() => {
-            res.send({ message: "User registered successfully!" });
-          });
-        });
-      } else {
-        // user role = 1
-        user.setRoles([1]).then(() => {
-          res.send({ message: "User registered successfully!" });
-        });
-      }
+        })
     })
     .catch(err => {
       res.status(500).send({ message: err.message });
@@ -87,10 +86,8 @@ exports.login = (req, res) => {
 };
 
 exports.logout = (req, res) => {
-  exports.update = (req,res) => {
-    res.status(500).send({
-      message:
-        err.message || "Enpoint not implemented"
-    });
-  }
+  res.status(500).send({
+    message:
+      err.message || "Enpoint not implemented"
+  });
 };

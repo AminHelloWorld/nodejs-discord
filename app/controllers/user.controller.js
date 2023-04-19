@@ -80,6 +80,11 @@ exports.list = (req, res) => {
 
 
 exports.update = (req, res) => {
+  if (req.userId === 1) {
+    return res.status(400).send({
+      message: "It's not possible to update the default admin user."
+    })
+  }
   if (req.body.name == null || req.body.name.trim().length == 0) {
     return res.status(400).send({
       message: "Please enter a valid update value."
@@ -107,31 +112,75 @@ exports.update = (req, res) => {
     });;
 }
 
+exports.updateUserRoles = (req, res) => {
+  if (req.query.userId === 1) {
+    return res.status(400).send({
+      message: "It's not possible to update the default admin user."
+    })
+  }
+  if (!req.body.roles.includes(2)) {
+    return res.status(400).send({
+      message: "It is not possible to remove 'default_user' role."
+    })
+  }
+  User.findOne({
+    id: req.query.userId
+  })
+    .then(user => {
+      if (user[0] == 0) {
+        return res.status(400).send({
+          message: "User not found."
+        })
+      }
+      Role.findAll({
+        where: {
+          name: {
+            [Op.or]: req.body.roles
+          }
+        }
+      }).then(roles => {
+        user.setRoles(roles).then(() => {
+          res.send({ message: "User roles updated successfully!" });
+        });
+      })
+    })
+    .catch(err => {
+      res.status(500).send({
+        message:
+          err.message || "Some error occurred while deleting user."
+      });
+    });;
+}
 
 exports.deleteSelf = (req, res) => {
+  if (req.userId === 1) {
+    return res.status(400).send({
+      message: "It's not possible to delete the default admin user."
+    })
+  }
   Message.destroy({
     where: {
       userId: req.userId
     }
   })
-    .then(() =>{
+    .then(() => {
       User.destroy({
         where: {
           id: req.userId
         }
       })
-      .then(result => {
-        if(result==0){
-          return res.status(400).send({
-            message: "User not found."
-          })
-        }
-        jwt.sign({ userId: req.userId }, config.secret, {
-          expiresIn: 10 // 24 hours
-        });
-        res.send({message : "User deleted successfully"})
+        .then(result => {
+          if (result === 0) {
+            return res.status(400).send({
+              message: "User not found."
+            })
+          }
+          jwt.sign({ userId: req.userId }, config.secret, {
+            expiresIn: 10 // 24 hours
+          });
+          res.send({ message: "User deleted successfully" })
         })
-   })
+    })
     .catch(err => {
       res.status(500).send({
         message:
@@ -143,29 +192,34 @@ exports.deleteSelf = (req, res) => {
 
 
 exports.delete = (req, res) => {
+  if (req.query.userId === 1) {
+    return res.status(400).send({
+      message: "It's not possible to delete the default admin user."
+    })
+  }
   Message.destroy({
     where: {
       userId: req.query.userId
     }
   })
-    .then(() =>{
+    .then(() => {
       User.destroy({
         where: {
           id: req.query.userId
         }
       })
-      .then(result => {
-        if(result==0){
-          return res.status(400).send({
-            message: "User not found."
-          })
-        }
-        jwt.sign({ userId: req.query.userId }, config.secret, {
-          expiresIn: 10 // 24 hours
-        });
-          res.send({message : "User deleted successfully"})
+        .then(result => {
+          if (result == 0) {
+            return res.status(400).send({
+              message: "User not found."
+            })
+          }
+          jwt.sign({ userId: req.query.userId }, config.secret, {
+            expiresIn: 10 // 24 hours
+          });
+          res.send({ message: "User deleted successfully" })
         })
-   })
+    })
     .catch(err => {
       res.status(500).send({
         message:

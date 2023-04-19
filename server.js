@@ -4,6 +4,7 @@ const cors = require("cors");
 const config =  require('./app/config/config.js');
 
 const app = express();
+const path = require("path");
 
 
 app.options('*', cors()) 
@@ -35,17 +36,18 @@ db.sequelize.sync()
 //   console.log("Drop and re-sync db.");
 // });
 
-// simple route
-app.get("/", (req, res) => {
-  res.json({ message: "Welcome to bezkoder application." });
-});
-
 require("./app/routes/user.routes")(app);
 require("./app/routes/message.routes")(app);
 require("./app/routes/channel.routes")(app);
 require("./app/routes/role.routes")(app);
 
 require('./app/routes/auth.routes')(app);
+
+app.use(express.static(path.resolve(__dirname, config.FE_OUTPUT_DIR)));
+
+app.get('*', function(req, res) {
+  res.sendFile(path.resolve(__dirname, config.FE_OUTPUT_DIR + "/index.html"));
+});
 
 // set port, listen for requests
 app.listen(config.NODE_PORT, () => {
