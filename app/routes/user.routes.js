@@ -32,6 +32,18 @@ module.exports = app => {
 
 
   /*
+   *  UPDATE USER ROLES
+   *
+   * 
+   */
+  router.put(
+    "/roles",
+    [authJwt.verifyToken, authJwt.isAdmin],
+    users.updateUserRoles
+  );
+
+
+  /*
    *  DELETE USER (self)
    *
    * 
